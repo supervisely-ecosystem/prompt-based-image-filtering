@@ -1,0 +1,18 @@
+{
+  "name": "Prompt-based image filtering with CLIP",
+  "type": "app",
+  "version": "2.0.0",
+  "description": "Filter or sort images by text prompts with CLIP model",
+  "categories": [
+    "neural network",
+    "images",
+    "development"
+  ],
+  "need_gpu": true,
+  "community_agent": false,
+  "docker_image": "supervisely/self-reformer:1.0.0",
+  "instance_version": "6.6.7",
+  "entrypoint": "python -m uvicorn src.main:m.app --host 0.0.0.0 --port 8000 --ws websockets",
+  "port": 8000,
+  "task_location": "application_sessions"
+}
