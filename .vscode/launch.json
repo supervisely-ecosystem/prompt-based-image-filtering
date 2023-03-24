@@ -5,7 +5,7 @@
             "name": "Local Debug",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/main.py",
+            "program": "${workspaceFolder}/src/images2masks.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "env": {

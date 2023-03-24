@@ -3,3 +3,4 @@ supervisely==6.69.78
 torch==1.8.2
 torchvision==0.9.2
 Pillow==9.2.0
+open_clip_torch
