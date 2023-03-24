@@ -3,3 +3,6 @@ __pycache__
 *.pt
 results
 app_data
+tmp/
+.flake8
+.venv/
