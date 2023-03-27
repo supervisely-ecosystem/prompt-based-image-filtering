@@ -61,6 +61,9 @@ def start_inference():
 
     inference_message.hide()
 
+    preview.plot.hide()
+
+    global text_prompt
     text_prompt = text_prompt_input.get_value()
     if not text_prompt:
         text_prompt_message.show()
@@ -101,7 +104,7 @@ def start_inference():
             if not continue_inference:
                 break
             pbar.update(1)
-            time.sleep(2)
+            time.sleep(1)
 
     if continue_inference:
 
@@ -109,6 +112,10 @@ def start_inference():
         inference_message.status = "success"
 
         preview.load_images()
+
+        preview.update_plot()
+        preview.plot.show()
+
         preview.card.unlock()
         preview.gallery_container.show()
         output.card.unlock()

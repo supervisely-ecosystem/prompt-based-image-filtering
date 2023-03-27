@@ -12,14 +12,9 @@ from supervisely.app.widgets import (
 import src.globals as g
 import src.ui.output as output
 
-# Replace with a real data.
-pseudo_xaxis = 20
-pseudo_x = [i for i in range(1, pseudo_xaxis + 1)]
-pseudo_y = [randint(-100, 100) for i in range(pseudo_xaxis)]
-
-# ... placeholder...
+# Preparing plot for data and hiding it until the inference is done.
 plot = LinePlot("Placeholder")
-plot.add_series("Series placeholder", pseudo_x, pseudo_y)
+plot.hide()
 
 # Field with treshold slider.
 threshold_slider = Slider(min=0, max=1, step=0.05, show_input=True, show_input_controls=True)
@@ -71,6 +66,20 @@ def load_images():
 
     before_gallery.loading = False
     after_gallery.loading = False
+
+
+def update_plot():
+    # Replace with a real data.
+    global plot
+
+    plot.loading = True
+
+    pseudo_xaxis = 20
+    pseudo_x = [i for i in range(1, pseudo_xaxis + 1)]
+    pseudo_y = [randint(-100, 100) for i in range(pseudo_xaxis)]
+    plot.add_series("Series placeholder", pseudo_x, pseudo_y)
+
+    plot.loading = False
 
 
 @threshold_slider.value_changed
