@@ -13,6 +13,8 @@ from supervisely.app.widgets import (
 import src.globals as g
 import src.ui.settings as settings
 import src.ui.inference as inference
+import src.ui.preview as preview
+import src.ui.output as output
 
 dataset_thumbnail = DatasetThumbnail()
 dataset_thumbnail.hide()
@@ -117,6 +119,8 @@ def load_dataset():
     select_dataset.disable()
     load_button.hide()
 
+    preview.plot._series = []
+
     # Showing the unlock button to change the dataset.
     change_dataset_button.show()
 
@@ -147,10 +151,13 @@ def clean_static_dir():
     """Deletes all files from the static directory."""
     static_files = os.listdir(g.STATIC_DIR)
 
-    sly.logger.debug(f"Cleaning static directory. Number of files to delete: {len(static_files)}.")
+    sly.logger.debug(
+        f"Cleaning static directory. Number of files to delete: {len(static_files) - 1}."
+    )
 
     for static_file in static_files:
-        os.remove(os.path.join(g.STATIC_DIR, static_file))
+        if static_file != g.PLACEHOLDER:
+            os.remove(os.path.join(g.STATIC_DIR, static_file))
 
 
 @change_dataset_button.click
@@ -163,3 +170,5 @@ def unlock_input():
     settings.card.lock()
 
     inference.card.lock()
+    preview.card.lock()
+    output.card.lock()

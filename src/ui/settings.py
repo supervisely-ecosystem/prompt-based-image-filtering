@@ -2,14 +2,10 @@ from supervisely.app.widgets import Card, RadioTable, Checkbox, InputNumber, Fie
 
 import src.globals as g
 
-# Replace with a real data.
-sizes_pseudo = [1000, 2000, 3000, 4000, 5000]
-params_pseudo = [0.1, 0.2, 0.3, 0.4, 0.5]
-
 # Building rows for RadioTable.
 rows = []
-for i in range(len(g.MODELS)):
-    row = [g.MODELS[i].capitalize(), sizes_pseudo[i], params_pseudo[i]]
+for model in g.MODELS:
+    row = [model[0], model[1]]
     rows.append(row)
 
 # Field with model selection.
@@ -21,7 +17,7 @@ model_radio_field = Field(
 )
 
 # Field with batch size input.
-batch_size_input = InputNumber(value=1, min=1, max=1024)
+batch_size_input = InputNumber(value=32, min=1, max=1024)
 batch_size_field = Field(
     title="Batch size",
     description="Choose the batch size in range from 1 to 1024.",

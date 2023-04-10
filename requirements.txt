@@ -1,5 +1,6 @@
---extra-index-url https://download.pytorch.org/whl/lts/1.8/cu111
+# --extra-index-url https://download.pytorch.org/whl/lts/1.8/cu111
 supervisely==6.70.10
-torch==1.8.2
-torchvision==0.9.2
+torch==1.9.0
+torchvision==0.10.0
 Pillow==9.2.0
+open-clip-torch==2.16.0

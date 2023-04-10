@@ -6,3 +6,5 @@ app_data
 tmp/
 .flake8
 .venv/
+.DS_Store
+src/clip_test.py

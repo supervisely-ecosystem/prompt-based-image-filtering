@@ -4,12 +4,10 @@ import numpy as np
 import torch
 from tqdm import tqdm
 from torch.utils.data import Dataset, DataLoader
-import clip
-from pathlib import Path
-from PIL import Image, ImageOps
 
 import supervisely as sly
 from dotenv import load_dotenv
+
 try:
     from typing import Literal
 except ImportError:
@@ -22,20 +20,34 @@ from src.clip_api import *
 load_dotenv("local.env")
 load_dotenv(os.path.expanduser("~/supervisely.env"))
 
+from src import tags
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
 batch_size = 32
-dataset_id = 61268
-output_project_id = 18618
-prompts = ["a photo of a cucumber"]
+
+dataset_id = 61265  # 2k
+# dataset_id = 61175  # 100
+output_project_id = 18615  # 2k
+# output_project_id = 18619  # 100
+
+prompts = ["a cucumber"]
 weights = [1.0]
-model_zoo = clip.available_models()  # ['RN50', 'RN101', 'RN50x4', 'RN50x16', 'RN50x64', 'ViT-B/32', 'ViT-B/16', 'ViT-L/14', 'ViT-L/14@336px']
-model_name = "ViT-L/14@336px"
+
+"ViT-B-32", "openai"
+"ViT-L-14", "openai"
+"ViT-L-14", "laion2b_s32b_b82k"
+"ViT-L-14-336", "openai"
+"ViT-g-14", "laion2b_s12b_b42k"
+"coca_ViT-L-14", "laion2B-s13B-b90k"
+"coca_ViT-L-14", "mscoco_finetuned_laion2B-s13B-b90k"
+
+model_name, pretrained = "coca_ViT-L-14", "mscoco_finetuned_laion2B-s13B-b90k"
 
 api = sly.Api()
 
-model, preprocess = build_model(model_name, device)
+model, preprocess, tokenizer = build_model(model_name, pretrained, device)
 
-input_prompts = preprocess_prompts(prompts, device)
+input_prompts = preprocess_prompts(prompts, tokenizer, device)
 
 img_infos = api.image.get_list(dataset_id)
 img_ids = [img_info.id for img_info in img_infos]
@@ -60,18 +72,29 @@ assert len(scores) == len(img_infos)
 i_sort = np.argsort(scores)[::-1]
 
 # Uploading copies
-output_dataset_id = api.dataset.create(output_project_id, name=prompts[0], change_name_if_conflict=True).id
+dataset_name = f"{prompts[0]} {model_name} {pretrained}"
+output_dataset_id = api.dataset.create(
+    output_project_id, name=dataset_name, change_name_if_conflict=True
+).id
 counter = 0
 uploaded_ids = []
 for i_batch in tqdm(sly.batched(i_sort, 100)):
-    names, hashes = [], []
+    names, hashes, metas = [], [], []
     for i_global in i_batch:
         names += [f"{counter:04}_{scores[i_global]:.4f}_{img_infos[i_global].name}"]
+        metas += [img_infos[i_global].meta]
         hashes += [img_infos[i_global].hash]
         counter += 1
-    uploaded_infos = api.image.upload_hashes(output_dataset_id, names, hashes)
+    uploaded_infos = api.image.upload_hashes(output_dataset_id, names, hashes, metas=metas)
     uploaded_ids += [info.id for info in uploaded_infos]
 
 # Copy annotations
 src_ids_sorted = np.array(img_ids)[i_sort].tolist()
 api.annotation.copy_batch_by_ids(src_ids_sorted, uploaded_ids)
+
+# Add tags clip_score
+tag_name = "clip_score"
+tag_meta = sly.TagMeta(tag_name, "any_number")
+_, tag_meta = tags.create_tag_meta(output_project_id, tag_meta)
+for score, img_id in tqdm(zip(scores[i_sort], uploaded_ids)):
+    tags.add_img_tag(img_id, tag_meta, score)
