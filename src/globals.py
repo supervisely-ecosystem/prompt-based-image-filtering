@@ -17,6 +17,7 @@ WORKSPACE_ID = sly.io.env.workspace_id()
 PROJECT_ID = sly.io.env.project_id(raise_not_found=False)
 DATASET_ID = sly.io.env.dataset_id(raise_not_found=False)
 
+# Image table columns.
 SELECT_BUTTON = "SELECT"
 TABLE_COLUMNS = [
     "IMAGE ID",
@@ -29,17 +30,22 @@ TABLE_COLUMNS = [
 
 SLY_APP_DATA_DIR = sly.app.get_data_dir()
 
+# Define and create static directory.
 ABSOLUTE_PATH = os.path.dirname(__file__)
 STATIC_DIR = os.path.join(SLY_APP_DATA_DIR, "static")
 os.makedirs(STATIC_DIR, exist_ok=True)
 
+# Batch size for uploading images to the dataset.
 BATCH_SIZE = 500
 
+# Define and copy placeholder image for Image preview widget to static directory.
 PLACEHOLDER = "placeholder.png"
 dst_file = os.path.join(STATIC_DIR, PLACEHOLDER)
 shutil.copy(PLACEHOLDER, dst_file)
 
+# Columns for RadioTable widget with models.
 MODELS_COLUMNS = ["Name", "Pretrained"]
+# List of available models.
 MODELS = [
     ("ViT-L-14", "openai"),
     ("ViT-L-14", "laion2b_s32b_b82k"),
@@ -50,11 +56,23 @@ MODELS = [
 ]
 WEIGHTS = [1.0]
 
+# Available methods for filtering and sorting images.
 FILTER_METHODS = ["above threshold", "below threshold"]
-SORT_METHODS = {
-    "asc": "Ascending 🔼",
-    "desc": "Descending 🔽",
-}
+SORT_METHODS = {"desc": "Descending 🔽", "asc": "Ascending 🔼"}
+
+
+class State:
+    def __init__(self):
+        self.text_prompt = None
+        self.image_infos = None
+        self.scores = None
+        self.i_sort = None
+
+    def get_params(self):
+        return self.image_infos, self.scores, self.i_sort
+
+
+STATE = State()
 
 SELECTED_TEAM = None
 SELECTED_WORKSPACE = None

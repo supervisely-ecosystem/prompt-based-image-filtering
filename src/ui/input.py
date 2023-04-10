@@ -96,7 +96,7 @@ card = Card(
 def load_dataset():
     """Handles the load button click event. Reading values from the SelectDataset widget,
     calling the API to get project, workspace and team ids (if they're not set),
-    building the table with images and unlocking the rotator and output cards.
+    unlocking the settings card and showing the dataset thumbnail.
     """
     # Reading the dataset id from SelectDataset widget.
     dataset_id = select_dataset.get_selected_id()
@@ -148,7 +148,7 @@ def load_dataset():
 
 
 def clean_static_dir():
-    """Deletes all files from the static directory."""
+    """Deletes all files from the static directory, except the placeholder file."""
     static_files = os.listdir(g.STATIC_DIR)
 
     sly.logger.debug(
@@ -162,6 +162,8 @@ def clean_static_dir():
 
 @change_dataset_button.click
 def unlock_input():
+    """Handles the change dataset button click event. Hiding the dataset thumbnail,
+    showing the dataset selector and the load button, locking the settings card."""
     select_dataset.enable()
     load_button.show()
     change_dataset_button.hide()

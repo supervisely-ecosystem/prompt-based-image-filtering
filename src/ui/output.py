@@ -1,7 +1,6 @@
-import time
-
 from collections import namedtuple
 from datetime import datetime
+from typing import Union
 
 import supervisely as sly
 from supervisely.app.widgets import (
@@ -19,7 +18,6 @@ from supervisely.app.widgets import (
 )
 
 import src.globals as g
-import src.ui.inference as inference
 
 sort_checkbox = Checkbox("Sort images")
 filter_checkbox = Checkbox("Filter images")
@@ -89,6 +87,7 @@ result_message = Text()
 result_dataset = DatasetThumbnail()
 result_dataset.hide()
 
+# Container with all widgets for saving the results.
 save_container = Container(
     widgets=[
         no_method_message,
@@ -101,6 +100,7 @@ save_container = Container(
     ]
 )
 
+# Card with all output widgets.
 card = Card(
     title="5️⃣ Output",
     description="Choose the output for the images and save the results.",
@@ -111,7 +111,12 @@ card.lock()
 
 
 @sort_checkbox.value_changed
-def sort_method(is_checked):
+def sort_method(is_checked: bool):
+    """Updates the visibility of the sort method field according to the sort checkbox state.
+
+    Args:
+        is_checked (bool): True if the checkbox is checked, False otherwise.
+    """
     if is_checked:
         sort_method_field.show()
     else:
@@ -119,7 +124,12 @@ def sort_method(is_checked):
 
 
 @filter_checkbox.value_changed
-def filter_method(is_checked):
+def filter_method(is_checked: bool):
+    """Updates the visibility of the filter method field according to the filter checkbox state.
+
+    Args:
+        is_checked (bool): True if the checkbox is checked, False otherwise.
+    """
     if is_checked:
         filter_containter.show()
     else:
@@ -128,8 +138,10 @@ def filter_method(is_checked):
 
 @save_button.click
 def save():
-    # Check if at least one method was selected.
+    """Handles the save button click event. Retrieves the settings from the UI and saves the results."""
+
     if not sort_checkbox.is_checked() and not filter_checkbox.is_checked():
+        # If no method was selected, show the error message and stop the function.
         no_method_message.show()
 
         sly.logger.debug("Save button clicked, but no method was selected.")
@@ -140,6 +152,7 @@ def save():
     result_dataset.hide()
     result_message.hide()
 
+    # Preparing named tuples for the settings.
     Filter = namedtuple("Filter", ["active", "method", "threshold"])
     Sort = namedtuple("Sort", ["active", "method"])
 
@@ -151,6 +164,7 @@ def save():
 
     sort_settings = Sort(active=sort_checkbox.is_checked(), method=sort_method_radio.get_value())
 
+    # Reading if the confidence tag should be added to the image metadata.
     add_tag = add_confidence_checkbox.is_checked()
 
     sly.logger.debug(
@@ -158,9 +172,11 @@ def save():
         f"Sort settings: {sort_settings}. Add tag: {add_tag}."
     )
 
-    image_infos, scores, i_sort = inference.image_infos, inference.scores, inference.i_sort
+    # Getting the images and their scores from the global state.
+    image_infos, scores, i_sort = g.STATE.get_params()
 
     if sort_settings.active:
+        # If sorting method is enabled, sort the images and their scores.
         sly.logger.debug(f"Sorting is active, the sorting method is {sort_settings.method}.")
 
         if sort_settings.method == "desc":
@@ -173,6 +189,7 @@ def save():
         sly.logger.debug("Images were sorted along with their scores.")
 
     if filter_settings.active:
+        # If filtering method is enabled, filter the images by their scores according to the threshold.
         sly.logger.debug(
             f"Filtering is active, the filtering method is {filter_settings.method} "
             f"with threshold {filter_settings.threshold}."
@@ -195,9 +212,12 @@ def save():
 
         sly.logger.debug(f"Finished filtering. {len(image_infos)} images left.")
 
+    # Retrieving the selected project and dataset IDs from the destination widget.
     project_id = destination.get_selected_project_id()
     dataset_id = destination.get_selected_dataset_id()
+
     if dataset_id == g.SELECTED_DATASET:
+        # If the same dataset was selected, show the warning message and stop the function.
         sly.logger.warning("Same dataset was selected. Showing warning message and stopping.")
         sly.app.show_dialog(
             title="Same dataset was selected",
@@ -220,12 +240,11 @@ def save():
 
     sly.logger.info(f"Project ID: {project_id}. Dataset ID: {dataset_id}.")
 
-    # project_meta = update_project_meta(project_id)
+    # Updating the project meta to upload annotations.
+    update_project_meta(project_id)
+    sly.logger.debug(f"Successfully updated project meta for project with ID {project_id}.")
 
     image_ids = [image.id for image in image_infos]
-    # sly.logger.debug(f"Created list with {len(image_ids)} image IDs, which will be uploaded.")
-
-    # annotations = download_annotations(image_ids, project_meta)
 
     save_progress.show()
     save_button.text = "Saving..."
@@ -237,10 +256,11 @@ def save():
         prefix = 0
 
         for batched_image_infos in sly.batched(image_infos, g.BATCH_SIZE):
+            # Uploading images in batches.
             sly.logger.debug(f"Starting to upload batch of {len(batched_image_infos)} images.")
 
             ids = [image_info.id for image_info in batched_image_infos]
-            metas = [image_info.meta for image_info in batched_image_infos]
+            metas = []
             names = []
 
             for i in range(len(batched_image_infos)):
@@ -249,6 +269,13 @@ def save():
                 names.append(new_name)
                 prefix += 1
 
+                meta = batched_image_infos[i].meta
+                if add_tag:
+                    # Adding the confidence tag to the image metadata.
+                    meta["Prompt based confidence"] = f"{scores[i]:.4f}"
+                metas.append(meta)
+
+            # Uploading images by their IDs.
             uploaded_images = g.api.image.upload_ids(dataset_id, names, ids, metas=metas)
             uploaded_image_ids.extend([image.id for image in uploaded_images])
 
@@ -257,8 +284,9 @@ def save():
 
     sly.logger.info(f"Finished uploading {len(uploaded_image_ids)} images.")
 
+    # Copying annotations from the selected dataset to the new dataset.
     g.api.annotation.copy_batch_by_ids(image_ids, uploaded_image_ids)
-    sly.logger.info(f"Suceessfully copied annotations for {len(uploaded_image_ids)} images.")
+    sly.logger.info(f"Successfully copied annotations for {len(uploaded_image_ids)} images.")
 
     save_button.text = "Save"
 
@@ -273,7 +301,16 @@ def save():
     result_dataset.show()
 
 
-def update_project_meta(project_id):
+def update_project_meta(project_id: int) -> sly.ProjectMeta:
+    """Retrieves the project meta from the original project and updates the project meta for the new project.
+
+    Args:
+        project_id (int): ID of the new project.
+
+    Returns:
+        sly.ProjectMeta: Project meta of the original project.
+    """
+    # Retrieving the project meta from the original project.
     meta_json = g.api.project.get_meta(g.SELECTED_PROJECT)
     project_meta = sly.ProjectMeta.from_json(meta_json)
 
@@ -281,6 +318,7 @@ def update_project_meta(project_id):
         f"Successfully downloaded project meta for original project with ID {g.SELECTED_PROJECT}."
     )
 
+    # Updating the new project meta to upload annotations.
     g.api.project.update_meta(project_id, project_meta)
 
     sly.logger.debug(f"Successfully updated project meta for new project with ID {project_id}.")
@@ -288,26 +326,19 @@ def update_project_meta(project_id):
     return project_meta
 
 
-def download_annotations(image_ids, project_meta):
-    sly.logger.debug(f"Starting download of annotations for {len(image_ids)} images.")
+def create_project(project_name: Union[str, None]) -> int:
+    """Creates a new project with the specified name. If the name is not specified, timestamp
+    and text prompt will be used.
 
-    annotation_infos = g.api.annotation.download_batch(g.SELECTED_DATASET, image_ids)
+    Args:
+        project_name Union[str, None]: name of the new project or None if the name is not specified.
 
-    annotation_jsons = [annotation_info.annotation for annotation_info in annotation_infos]
-
-    annotations = [sly.Annotation.from_json(json, project_meta) for json in annotation_jsons]
-
-    sly.logger.debug(
-        f"Downloaded {len(annotations)} annotations from dataset with id {g.SELECTED_DATASET}."
-    )
-
-    return annotations
-
-
-def create_project(project_name):
-    # If the name is not specified, use the search query as the name.
+    Returns:
+        int: id of the new project.
+    """
     if not project_name:
-        from src.ui.inference import text_prompt
+        # If the name is not specified, timestamp and text prompt will be used.
+        text_prompt = g.STATE.text_prompt
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
 
@@ -316,6 +347,7 @@ def create_project(project_name):
         )
         project_name = f"{timestamp}_({text_prompt})"
 
+    # Creating a new project.
     project = g.api.project.create(g.WORKSPACE_ID, project_name, change_name_if_conflict=True)
 
     sly.logger.info(f"Project with name {project_name} and id {project.id} was created.")
@@ -323,10 +355,20 @@ def create_project(project_name):
     return project.id
 
 
-def create_dataset(project_id, dataset_name):
-    # If the name is not specified, use the search query as the name.
+def create_dataset(project_id: int, dataset_name: Union[str, None]) -> int:
+    """Creates a new dataset with the specified name. If the name is not specified, timestamp
+    and text prompt will be used.
+
+    Args:
+        project_id (int): ID of the project to which the dataset will be added.
+        dataset_name (Union[str, None]): name of the new dataset or None if the name is not specified.
+
+    Returns:
+        int: id of the new dataset.
+    """
     if not dataset_name:
-        from src.ui.inference import text_prompt
+        # If the name is not specified, timestamp and text prompt will be used.
+        text_prompt = g.STATE.text_prompt
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
 
@@ -335,6 +377,7 @@ def create_dataset(project_id, dataset_name):
         )
         dataset_name = f"{timestamp}_({text_prompt})"
 
+    # Creating a new dataset.
     dataset = g.api.dataset.create(project_id, dataset_name, change_name_if_conflict=True)
 
     sly.logger.info(f"Dataset with name {dataset_name} and id {dataset.id} was created.")

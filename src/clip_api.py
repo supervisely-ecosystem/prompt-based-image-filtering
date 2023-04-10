@@ -3,12 +3,6 @@ import torch
 from PIL import Image, ImageOps
 import open_clip
 
-# from src.model_zoo import model_zoo
-
-
-# def get_models():
-#    return model_zoo
-
 
 def build_model(model_name, pretrained, device, jit=False):
     model, _, preprocess = open_clip.create_model_and_transforms(
@@ -46,7 +40,7 @@ def infer_batch(model: open_clip.CLIP, input_images, input_prompts):
         image_features /= image_features.norm(dim=-1, keepdim=True)
         text_features /= text_features.norm(dim=-1, keepdim=True)
         logits_per_image = image_features @ text_features.T
-    return logits_per_image  # [IMG, TEXT]
+    return logits_per_image
 
 
 def collect_inference(logits):
@@ -54,6 +48,5 @@ def collect_inference(logits):
 
 
 def calculate_scores(logits: np.ndarray, weights: list):
-    # logits: [IMG, TEXT]
     scores = (logits * weights).sum(-1)
     return scores

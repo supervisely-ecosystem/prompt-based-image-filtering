@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "iwatkot",
+            "name": "Local debug",
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
@@ -21,19 +21,6 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}:${PYTHONPATH}",
                 "LOG_LEVEL": "DEBUG"
-            }
-        },
-        {
-            "name": "Local Debug",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/src/main.py",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}:${PYTHONPATH}",
-                "LOG_LEVEL": "DEBUG",
-                "SLY_APP_DATA_DIR": "${workspaceFolder}/app_data"
             }
         },
         {
