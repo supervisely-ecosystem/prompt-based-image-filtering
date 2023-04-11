@@ -107,7 +107,7 @@ card = Card(
     content=Container(widgets=[method_field, save_container]),
     lock_message="Complete the inference on step 3️⃣.",
 )
-# card.lock()
+card.lock()
 
 
 @sort_checkbox.value_changed
