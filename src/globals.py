@@ -36,7 +36,7 @@ STATIC_DIR = os.path.join(SLY_APP_DATA_DIR, "static")
 os.makedirs(STATIC_DIR, exist_ok=True)
 
 # Batch size for uploading images to the dataset.
-BATCH_SIZE = 500
+BATCH_SIZE = 100
 
 # Define and copy placeholder image for Image preview widget to static directory.
 PLACEHOLDER = "placeholder.png"
@@ -67,6 +67,7 @@ class State:
         self.image_infos = None
         self.scores = None
         self.i_sort = None
+        self.continue_inference = True
 
     def get_params(self):
         return self.image_infos, self.scores, self.i_sort

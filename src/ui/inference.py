@@ -6,7 +6,7 @@ import torch
 import numpy as np
 import supervisely as sly
 
-from supervisely.app.widgets import Card, Input, Field, Container, Progress, Button, Text
+from supervisely.app.widgets import Card, Input, Field, Container, Progress, Button, Text, Flexbox
 
 import src.globals as g
 import src.clip_api as clip_api
@@ -29,7 +29,13 @@ text_prompt_message = Text(
 )
 text_prompt_message.hide()
 
+# Flexbox for start and cancel inference buttons.
 start_inference_button = Button(text="Start inference")
+cancel_inference_button = Button(
+    text="Cancel", button_type="danger", icon="zmdi zmdi-close-circle-o"
+)
+cancel_inference_button.hide()
+buttons_flexbox = Flexbox(widgets=[start_inference_button, cancel_inference_button])
 
 # Progress bar for inference.
 inference_progress = Progress()
@@ -47,7 +53,7 @@ card = Card(
         widgets=[
             text_prompt_field,
             text_prompt_message,
-            start_inference_button,
+            buttons_flexbox,
             inference_progress,
             inference_message,
         ]
@@ -73,7 +79,10 @@ def start_inference():
 
         return
 
+    g.STATE.continue_inference = True
+
     # Changing UI state.
+    cancel_inference_button.show()
     text_prompt_message.hide()
     preview.table.hide()
     preview.image_preview.hide()
@@ -115,6 +124,7 @@ def start_inference():
 
     # Getting images from selected dataset.
     image_infos = g.api.image.get_list(g.SELECTED_DATASET)
+    g.STATE.text_prompt = text_prompt
     g.STATE.image_infos = image_infos
 
     # Preparing list of image ids.
@@ -130,26 +140,45 @@ def start_inference():
         all_logits = []
 
         for batched_image_ids in sly.batched(image_ids, bath_size):
-            # Starting inference loop in batches.
-            batched_image_bytes = g.api.image.download_bytes(g.SELECTED_DATASET, batched_image_ids)
+            if g.STATE.continue_inference:
+                # Starting inference loop in batches.
+                batched_image_bytes = g.api.image.download_bytes(
+                    g.SELECTED_DATASET, batched_image_ids
+                )
 
-            sly.logger.debug(f"Downloaded {len(batched_image_bytes)} images as bytes.")
+                sly.logger.debug(f"Downloaded {len(batched_image_bytes)} images as bytes.")
 
-            # Converting images to PIL and preprocessing them.
-            images_pil = [
-                clip_api.load_image(io.BytesIO(image_bytes)) for image_bytes in batched_image_bytes
-            ]
+                # Converting images to PIL and preprocessing them.
+                images_pil = [
+                    clip_api.load_image(io.BytesIO(image_bytes))
+                    for image_bytes in batched_image_bytes
+                ]
 
-            sly.logger.debug(f"Loaded {len(images_pil)} images as PIL.")
-            images = [clip_api.preprocess_image(image_pil, preprocess) for image_pil in images_pil]
-            sly.logger.debug(f"Preprocessed {len(images)} images.")
+                sly.logger.debug(f"Loaded {len(images_pil)} images as PIL.")
+                images = [
+                    clip_api.preprocess_image(image_pil, preprocess) for image_pil in images_pil
+                ]
+                sly.logger.debug(f"Preprocessed {len(images)} images.")
 
-            input_images = clip_api.collate_batch(images, device)
-            logits = clip_api.infer_batch(model, input_images, input_prompts)
-            all_logits.append(logits)
+                input_images = clip_api.collate_batch(images, device)
+                logits = clip_api.infer_batch(model, input_images, input_prompts)
+                all_logits.append(logits)
 
-            pbar.update(len(batched_image_ids))
+                pbar.update(len(batched_image_ids))
 
+    cancel_inference_button.hide()
+
+    if not g.STATE.continue_inference:
+        inference_message.text = "Inference was cancelled."
+        inference_message.status = "error"
+        inference_message.show()
+
+        sly.logger.info(f"Inference was canceled. Text prompt: {text_prompt}.")
+
+        start_inference_button.text = "Start inference"
+        return
+
+    start_inference_button.text = "Finishing..."
     logits = clip_api.collect_inference(all_logits)
 
     scores = clip_api.calculate_scores(logits, g.WEIGHTS).flatten()
@@ -180,3 +209,11 @@ def start_inference():
     settings.card.unlock()
 
     start_inference_button.text = "Start inference"
+
+
+@cancel_inference_button.click
+def cancel_inference():
+    sly.logger.debug("Cancel inference button was clicked.")
+    cancel_inference_button.hide()
+    start_inference_button.text = "Stopping..."
+    g.STATE.continue_inference = False

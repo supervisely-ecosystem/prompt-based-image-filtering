@@ -272,7 +272,7 @@ def save():
                 meta = batched_image_infos[i].meta
                 if add_tag:
                     # Adding the confidence tag to the image metadata.
-                    meta["Prompt based confidence"] = f"{scores[i]:.4f}"
+                    meta["Prompt based confidence"] = f"{g.STATE.text_prompt} - {scores[i]:.4f}"
                 metas.append(meta)
 
             # Uploading images by their IDs.
