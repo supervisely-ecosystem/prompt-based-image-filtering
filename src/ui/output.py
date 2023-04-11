@@ -73,7 +73,7 @@ method_field = Field(
     ),
 )
 
-destination = DestinationProject(g.SELECTED_WORKSPACE, project_type="images")
+destination = DestinationProject(g.WORKSPACE_ID, project_type="images")
 
 add_confidence_checkbox = Checkbox("Add confidence tag")
 
@@ -107,7 +107,7 @@ card = Card(
     content=Container(widgets=[method_field, save_container]),
     lock_message="Complete the inference on step 3️⃣.",
 )
-card.lock()
+# card.lock()
 
 
 @sort_checkbox.value_changed
