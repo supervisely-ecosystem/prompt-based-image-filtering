@@ -2,7 +2,7 @@
   "name": "Prompt-based image filtering with CLIP",
   "type": "app",
   "version": "2.0.0",
-  "description": "Filter or sort images by text prompts with CLIP model",
+  "description": "Filter or sort images by text prompts with CLIP model.",
   "categories": [
     "neural network",
     "images",

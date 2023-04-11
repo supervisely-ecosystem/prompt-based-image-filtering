@@ -142,18 +142,12 @@ def handle_table_button(datapoint: sly.app.widgets.Table.ClickedDataPoint):
     sly.logger.debug(
         f"Image with id {selected_image_id} was selected in the table. Image info retrieved successfully."
     )
-    # Defining the path in static directory to download the image for the preview widget.
-    selected_image_path = os.path.join(g.STATIC_DIR, selected_image_info.name)
 
-    g.api.image.download(selected_image_id, selected_image_path)
+    image_preview.loading = True
 
-    sly.logger.debug(
-        f"Successfully downloaded image with id {selected_image_id} as {selected_image_path}."
-    )
+    selected_image_url = selected_image_info.preview_url
+    image_preview.set(url=selected_image_url)
 
-    # Updating the image preview widget with the downloaded image.
-    image_preview.set(
-        url=os.path.join("static", selected_image_info.name),
-    )
+    image_preview.loading = False
 
-    sly.logger.debug(f"Updated image preview with image from {selected_image_path}.")
+    sly.logger.debug(f"Updated image preview with url {selected_image_url}.")

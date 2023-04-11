@@ -18,15 +18,13 @@ import src.ui.output as output
 # Field with text prompt input for filtering.
 text_prompt_input = Input(minlength=1, placeholder="Enter the text prompt here...")
 text_prompt_field = Field(
-    title="Text prompt for filtering",
-    description="Enter the text prompt for filtering the images.",
+    title="Text prompt",
+    description="Enter the text prompt for inference.",
     content=text_prompt_input,
 )
 
 # Message if no text prompt was entered.
-text_prompt_message = Text(
-    text="Please, enter the text prompt for filtering the images.", status="error"
-)
+text_prompt_message = Text(text="Please, enter the text prompt for inference.", status="error")
 text_prompt_message.hide()
 
 # Flexbox for start and cancel inference buttons.
@@ -195,7 +193,7 @@ def start_inference():
     sly.logger.info(f"Inference finished successfully. Text prompt: {text_prompt}.")
 
     # Updating plot and table with inference results.
-    i_list, score_list = zip(*[(i, score) for i, score in enumerate(scores[i_sort[::-1]])])
+    i_list, score_list = zip(*[(i, score) for i, score in enumerate(scores[i_sort])])
     preview.update_plot(i_list, score_list, text_prompt)
 
     preview.build_table(image_infos, scores)

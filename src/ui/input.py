@@ -1,5 +1,3 @@
-import os
-
 import supervisely as sly
 from supervisely.app.widgets import (
     Card,
@@ -112,14 +110,13 @@ def load_dataset():
     # Changing the values of the global variables to access them from other modules.
     g.SELECTED_DATASET = dataset_id
 
-    # Cleaning the static directory when the new dataset is selected.
-    clean_static_dir()
-
     # Disabling the dataset selector and the load button.
     select_dataset.disable()
     load_button.hide()
 
+    preview.plot.loading = True
     preview.plot._series = []
+    preview.plot.loading = False
 
     # Showing the unlock button to change the dataset.
     change_dataset_button.show()
@@ -145,19 +142,6 @@ def load_dataset():
     dataset_thumbnail.show()
 
     unlock_cards()
-
-
-def clean_static_dir():
-    """Deletes all files from the static directory, except the placeholder file."""
-    static_files = os.listdir(g.STATIC_DIR)
-
-    sly.logger.debug(
-        f"Cleaning static directory. Number of files to delete: {len(static_files) - 1}."
-    )
-
-    for static_file in static_files:
-        if static_file != g.PLACEHOLDER:
-            os.remove(os.path.join(g.STATIC_DIR, static_file))
 
 
 @change_dataset_button.click
