@@ -108,7 +108,7 @@ def start_inference():
     output.card.lock()
 
     # Selecting device according to the availability of GPU.
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = g.DEVICE
     sly.logger.info(f"Using device: {device}.")
 
     # Building model, preprocessing input data and running inference.

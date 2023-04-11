@@ -1,6 +1,8 @@
 import os
 import shutil
 
+import torch
+
 import supervisely as sly
 
 from dotenv import load_dotenv
@@ -10,6 +12,10 @@ if sly.is_development():
     load_dotenv(os.path.expanduser("~/supervisely.env"))
 
 api: sly.Api = sly.Api.from_env()
+
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+MODEL_BATCH_SIZE = 128 if DEVICE == "cuda" else 32
+sly.logger.info(f"Chosen device: {DEVICE}, batch size: {MODEL_BATCH_SIZE}")
 
 TEAM_ID = sly.io.env.team_id()
 WORKSPACE_ID = sly.io.env.workspace_id()
@@ -47,12 +53,12 @@ shutil.copy(PLACEHOLDER, dst_file)
 MODELS_COLUMNS = ["Name", "Pretrained"]
 # List of available models.
 MODELS = [
+    ("coca_ViT-L-14", "mscoco_finetuned_laion2B-s13B-b90k"),
+    ("coca_ViT-L-14", "laion2B-s13B-b90k"),
     ("ViT-L-14", "openai"),
     ("ViT-L-14", "laion2b_s32b_b82k"),
     ("ViT-L-14-336", "openai"),
     ("ViT-g-14", "laion2b_s12b_b42k"),
-    ("coca_ViT-L-14", "laion2B-s13B-b90k"),
-    ("coca_ViT-L-14", "mscoco_finetuned_laion2B-s13B-b90k"),
 ]
 WEIGHTS = [1.0]
 

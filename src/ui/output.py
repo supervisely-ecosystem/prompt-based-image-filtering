@@ -75,7 +75,7 @@ method_field = Field(
 
 destination = DestinationProject(g.SELECTED_WORKSPACE, project_type="images")
 
-add_confidence_checkbox = Checkbox("Add confidence tag to the image metadata", checked=True)
+add_confidence_checkbox = Checkbox("Add confidence tag")
 
 save_button = Button("Save")
 
@@ -241,7 +241,7 @@ def save():
     sly.logger.info(f"Project ID: {project_id}. Dataset ID: {dataset_id}.")
 
     # Updating the project meta to upload annotations.
-    update_project_meta(project_id)
+    project_meta = update_project_meta(project_id)
     sly.logger.debug(f"Successfully updated project meta for project with ID {project_id}.")
 
     image_ids = [image.id for image in image_infos]
@@ -270,9 +270,7 @@ def save():
                 prefix += 1
 
                 meta = batched_image_infos[i].meta
-                if add_tag:
-                    # Adding the confidence tag to the image metadata.
-                    meta["Prompt based confidence"] = f"{g.STATE.text_prompt} - {scores[i]:.4f}"
+                meta["Prompt based confidence"] = f"{g.STATE.text_prompt} - {scores[i]:.4f}"
                 metas.append(meta)
 
             # Uploading images by their IDs.
@@ -287,6 +285,29 @@ def save():
     # Copying annotations from the selected dataset to the new dataset.
     g.api.annotation.copy_batch_by_ids(image_ids, uploaded_image_ids)
     sly.logger.info(f"Successfully copied annotations for {len(uploaded_image_ids)} images.")
+
+    if add_tag:
+        with save_progress(message="Adding tags...", total=len(uploaded_image_ids)) as pbar:
+            sly.logger.debug("Add tag is enabled. Starting to add tag to the images.")
+
+            tag_name = f"CLIP score ({g.STATE.text_prompt})"
+            sly.logger.debug(f"Tag name: {tag_name}")
+
+            score_meta = sly.TagMeta(tag_name, "any_number")
+            tagged_project_meta = project_meta.add_tag_meta(score_meta)
+            sly.logger.debug("Added tag meta to the project meta.")
+
+            g.api.project.update_meta(project_id, tagged_project_meta)
+            sly.logger.debug("Updated project meta with tag meta.")
+
+            tag_meta = get_tag_meta(project_id, tag_name)
+
+            sly.logger.info("Starting to add tags to the images.")
+            for i in range(len(uploaded_image_ids)):
+                g.api.image.add_tag(uploaded_image_ids[i], tag_meta.sly_id, f"{scores[i]:.4f}")
+                pbar.update(1)
+
+            sly.logger.info(f"Successfully added tags to {len(uploaded_image_ids)} images.")
 
     save_button.text = "Save"
 
@@ -324,6 +345,12 @@ def update_project_meta(project_id: int) -> sly.ProjectMeta:
     sly.logger.debug(f"Successfully updated project meta for new project with ID {project_id}.")
 
     return project_meta
+
+
+def get_tag_meta(project_id, tag_name) -> sly.TagMeta:
+    project_meta = g.api.project.get_meta(project_id)
+    project_meta = sly.ProjectMeta.from_json(project_meta)
+    return project_meta.get_tag_meta(tag_name)
 
 
 def create_project(project_name: Union[str, None]) -> int:

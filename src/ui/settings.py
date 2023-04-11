@@ -17,7 +17,7 @@ model_radio_field = Field(
 )
 
 # Field with batch size input.
-batch_size_input = InputNumber(value=32, min=1, max=1024)
+batch_size_input = InputNumber(value=g.MODEL_BATCH_SIZE, min=1, max=1024)
 batch_size_field = Field(
     title="Batch size",
     description="Choose the batch size in range from 1 to 1024.",
