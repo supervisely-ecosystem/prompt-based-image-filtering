@@ -172,6 +172,10 @@ def start_inference():
         sly.logger.info(f"Inference was canceled. Text prompt: {text_prompt}.")
 
         start_inference_button.text = "Start inference"
+
+        input.card.unlock()
+        settings.card.unlock()
+
         return
 
     start_inference_button.text = "Finishing..."

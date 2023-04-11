@@ -153,7 +153,7 @@ def unlock_input():
 
     inference.card.lock()
     preview.card.lock()
-    preview.plot.clean_up()  # Requires PR with new function in LinePlot.
+    # preview.plot.clean_up()  # Requires PR with new function in LinePlot.
     preview.table.hide()
     preview.image_preview.hide()
     output.card.lock()
