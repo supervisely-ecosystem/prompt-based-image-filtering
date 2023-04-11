@@ -114,9 +114,7 @@ def load_dataset():
     select_dataset.disable()
     load_button.hide()
 
-    preview.plot.loading = True
-    preview.plot._series = []
-    preview.plot.loading = False
+    # preview.plot.clean_up()   # Requires PR with new function in LinePlot.
 
     # Showing the unlock button to change the dataset.
     change_dataset_button.show()
@@ -157,4 +155,6 @@ def unlock_input():
 
     inference.card.lock()
     preview.card.lock()
+    preview.table.hide()
+    preview.image_preview.hide()
     output.card.lock()
