@@ -28,7 +28,7 @@ batch_size_field = Field(
 jit_checkbox = Checkbox(content="Enable JIT", checked=True)
 jit_field = Field(
     title="Enable Just-In-Time compilation",
-    description="JIT can speed up training, but may require more memory and increase runtime overhead.",
+    description="JIT can speed up inference, but may require more memory and increase runtime overhead.",
     content=jit_checkbox,
 )
 

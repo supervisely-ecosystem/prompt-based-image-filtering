@@ -58,8 +58,13 @@ MODELS = [
     ("ViT-L-14", "openai"),
     ("ViT-L-14", "laion2b_s32b_b82k"),
     ("ViT-L-14-336", "openai"),
-    ("ViT-g-14", "laion2b_s12b_b42k"),
+    ("ViT-g-14", "laion2b_s34b_b88k"),
+    ("ViT-bigG-14", "laion2b_s39b_b160k"),
+    ("convnext_base_w", "laion2b_s13b_b82k_augreg"),
+    ("convnext_large_d_320", "laion2b_s29b_b131k_ft_soup"),
+    ("convnext_xxlarge", "laion2b_s34b_b82k_augreg_soup"),
 ]
+# Prompt weights.
 WEIGHTS = [1.0]
 
 # Available methods for filtering and sorting images.

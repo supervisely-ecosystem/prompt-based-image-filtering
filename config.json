@@ -1,8 +1,8 @@
 {
-  "name": "Prompt-based image filtering with CLIP",
+  "name": "Prompt-based Image Filtering with CLIP",
   "type": "app",
   "version": "2.0.0",
-  "description": "Filter or sort images by text prompts with CLIP model.",
+  "description": "Filter and rank images by text prompts with CLIP models",
   "categories": [
     "neural network",
     "images",
@@ -14,7 +14,7 @@
   "instance_version": "6.6.7",
   "entrypoint": "python -m uvicorn src.main:app --host 0.0.0.0 --port 8000 --ws websockets",
   "port": 8000,
-  "task_location": "application_sessions",
+  "task_location": "workspace_tasks",
   "context_menu": {
     "target": ["images_project", "images_dataset", "ecosystem"]
   }
