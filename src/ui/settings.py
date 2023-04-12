@@ -5,7 +5,7 @@ import src.globals as g
 # Building rows for RadioTable.
 rows = []
 for model in g.MODELS:
-    row = [model[0], model[1]]
+    row = [*model]
     rows.append(row)
 
 # Field with model selection.

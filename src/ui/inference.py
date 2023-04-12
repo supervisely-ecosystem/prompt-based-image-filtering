@@ -91,7 +91,7 @@ def start_inference():
     start_inference_button.text = "Preparing..."
 
     # Getting selected model parameters.
-    model_name, pretrained = g.MODELS[settings.model_radio_table.get_selected_row_index()]
+    model_name, pretrained = g.MODELS[settings.model_radio_table.get_selected_row_index()][:2]
     bath_size = settings.batch_size_input.get_value()
     jit = settings.jit_checkbox.is_checked()
 

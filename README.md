@@ -20,26 +20,24 @@
 
 ## Overview
 
-This app allows to quickly and easily filter and rank images in Supervisely datasets by text prompts. It uses [CLIP](https://openai.com/research/clip) model to predict the **relevance** of images to the given text prompt. This app can be useful for filtering or ranking images in a dataset by their content. The relevances (CLIP score) of each image to the given prompt will be shown in a table. The user can choose to filter or sort images by the relevance or do both at the same time and then upload images to a new dataset.
-
+This app allows you to quickly and easily filter and rank images in Supervisely datasets by text prompts. It uses [CLIP](https://openai.com/research/clip) model to predict the **relevance** of images to the given text prompt. This app can be useful for filtering or ranking images in a dataset by their content. The relevance (CLIP score) of each image to the given prompt will be shown in a table. The user can choose to filter or sort images by relevance or do both at the same time and then upload images to a new dataset.
 
 ## Pretrained models
 
 We have selected several pre-trained models from the [OpenCLIP](https://github.com/mlfoundations/open_clip) repository:
 
-| Model    | Pretrained on   | top-1 accuracy on ImageNet | Size |
-| -------- | --------------- | -------------------------- | ---- |
-| coca\_ViT-L-14 | mscoco\_finetuned\_laion2B-s13B-b90k | - | 2.55 GB |
-| coca\_ViT-L-14 | laion2B-s13B-b90k | 75.5% | 2.55 GB |
-| ViT-L-14 | openai | 75.5% | 933 MB |
-| ViT-L-14 | laion2b\_s32b\_b82k | 75.3% | 933 MB |
-| ViT-L-14-336 | openai | - | 933 MB |
-| ViT-g-14 | laion2b\_s34b\_b88k | 78.5% | 5.47 GB |
-| ViT-bigG-14 | laion2b\_s39b\_b160k | 80.1% | 10.2 GB |
-| convnext\_base\_w | laion2b\_s13b\_b82k\_augreg | 71.5% | 718 MB |
-| convnext\_large\_d\_320 | laion2b\_s29b\_b131k\_ft\_soup | 76.9% | 1.41 GB |
-<!-- | convnext\_xxlarge | laion2b\_s34b\_b82k\_augreg\_soup | 79.4% |  | -->
-
+| Model                | Pretrained on                      | top-1 accuracy on ImageNet    | Size    |
+| -------------------- | ---------------------------------- | ----------------------------- | ------- | --- | --- |
+| coca_ViT-L-14        | mscoco_finetuned_laion2B-s13B-b90k | -                             | 2.55 GB |
+| coca_ViT-L-14        | laion2B-s13B-b90k                  | 75.5%                         | 2.55 GB |
+| ViT-L-14             | openai                             | 75.5%                         | 933 MB  |
+| ViT-L-14             | laion2b_s32b_b82k                  | 75.3%                         | 933 MB  |
+| ViT-L-14-336         | openai                             | -                             | 933 MB  |
+| ViT-g-14             | laion2b_s34b_b88k                  | 78.5%                         | 5.47 GB |
+| ViT-bigG-14          | laion2b_s39b_b160k                 | 80.1%                         | 10.2 GB |
+| convnext_base_w      | laion2b_s13b_b82k_augreg           | 71.5%                         | 718 MB  |
+| convnext_large_d_320 | laion2b_s29b_b131k_ft_soup         | 76.9%                         | 1.41 GB |
+| <!--                 | convnext_xxlarge                   | laion2b_s34b_b82k_augreg_soup | 79.4%   |     | --> |
 
 ## How-To-Run
 
@@ -52,7 +50,7 @@ PLACEHOLDER FOR SCREENSHOT WITH SELECTED DATASET (DATASET THUMBNAIL) AND SELECTE
 
 **Step 2:** Enter the text prompt in the `Text prompt` field. The prompt can be a single word or a phrase. And then click the `Start Inference` button. The app will start with downloading chosen model and then it will start inference of images with specified batch size. You can stop the inference process at any time by clicking the `Cancel inference` button.<br><br>
 
-**Step 3:** After the inference is finished, the next section of the app will be unlocked. In this section, you can see a chart that visualizes . The chart shows a CLIP's score (on Y-axis) for each image (X-axis is for image indices), and the images are sorted by the scores in descending order. This can give you an intuition of what kind of data you have in general (e.g. the number of images within a score range) and help to select a threshold. You can also see a table with all images from the dataset and their scores, which are sorted by score in descending order by default. You can press the `Select` button in the table to preview the image. It can be handy for finding the optimal threshold for image filtering.<br><br>
+**Step 3:** After the inference is finished, the next section of the app will be unlocked. The chart shows a CLIP's score (on Y-axis) for each image (X-axis is for image indices), and the images are sorted by the scores in descending order. This can give you an intuition of what kind of data you have in general (e.g. the number of images within a score range) and help to select a threshold. You can also see a table with all images from the dataset and their scores, which are sorted by score in descending order by default. You can press the `Select` button in the table to preview the image. It can be handy for finding the optimal threshold for image filtering.<br><br>
 
 PLACEHOLDER FOR SCREENSHOT WITH CHART, TABLE AND ANY IMAGE IN PREVIEW (NOT PLACEHOLDER)<br><br>
 
@@ -67,8 +65,6 @@ PLACEHOLDER FOR SCREENSHOT WITH RESULTS<br><br>
 
 After the upload is finished, you will see a message with the number of images that have been successfully uploaded to the dataset. The app will also show the project and the dataset to which the images were uploaded. You can click on the links to open the project or the dataset.<br><br>
 After finishing using the app, don't forget to stop the app session manually in the App Sessions. The app will write information about the text prompt and CLIP score to the image metadata. You can find this information in the Image Properties - Info section of the image in the labeling tool.
-
-
 
 ## Acknowledgment
 

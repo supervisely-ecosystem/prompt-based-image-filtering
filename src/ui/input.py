@@ -62,9 +62,9 @@ elif g.PROJECT_ID:
     # If the app was loaded from a project: showing the dataset selector in compact mode.
     sly.logger.debug("App was loaded from a project.")
 
-    g.SELECTED_TEAM = g.TEAM_ID
-    g.SELECTED_WORKSPACE = g.WORKSPACE_ID
-    g.SELECTED_PROJECT = g.PROJECT_ID
+    # g.SELECTED_TEAM = g.TEAM_ID
+    # g.SELECTED_WORKSPACE = g.WORKSPACE_ID
+    # g.SELECTED_PROJECT = g.PROJECT_ID
 
     select_dataset = SelectDataset(project_id=g.PROJECT_ID, compact=True, show_label=False)
 else:
@@ -117,18 +117,16 @@ def load_dataset():
     # Showing the unlock button to change the dataset.
     change_dataset_button.show()
 
-    if not g.SELECTED_PROJECT:
-        # If the project id is not set, getting project, workspace and team ids from the API.
-        sly.logger.debug(f"Project ID is not set, calling API with dataset ID {dataset_id}.")
+    sly.logger.debug(f"Calling API with dataset ID {dataset_id} to get project ID.")
 
-        g.SELECTED_PROJECT = g.api.dataset.get_info_by_id(dataset_id).project_id
-        g.SELECTED_WORKSPACE = g.api.project.get_info_by_id(g.SELECTED_PROJECT).workspace_id
-        g.SELECTED_TEAM = g.api.workspace.get_info_by_id(g.SELECTED_WORKSPACE).team_id
+    g.SELECTED_PROJECT = g.api.dataset.get_info_by_id(dataset_id).project_id
+    g.SELECTED_WORKSPACE = g.api.project.get_info_by_id(g.SELECTED_PROJECT).workspace_id
+    g.SELECTED_TEAM = g.api.workspace.get_info_by_id(g.SELECTED_WORKSPACE).team_id
 
-        sly.logger.debug(
-            f"Recived IDs from the API. Selected team: {g.SELECTED_TEAM}, "
-            f"selected workspace: {g.SELECTED_WORKSPACE}, selected project: {g.SELECTED_PROJECT}"
-        )
+    sly.logger.debug(
+        f"Recived IDs from the API. Selected team: {g.SELECTED_TEAM}, "
+        f"selected workspace: {g.SELECTED_WORKSPACE}, selected project: {g.SELECTED_PROJECT}"
+    )
 
     dataset_thumbnail.set(
         g.api.project.get_info_by_id(g.SELECTED_PROJECT),
