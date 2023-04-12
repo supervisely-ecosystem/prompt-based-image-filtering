@@ -14,7 +14,7 @@ if sly.is_development():
 api: sly.Api = sly.Api.from_env()
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-MODEL_BATCH_SIZE = 128 if DEVICE == "cuda" else 32
+MODEL_BATCH_SIZE = 32 if DEVICE == "cuda" else 16
 sly.logger.info(f"Chosen device: {DEVICE}, batch size: {MODEL_BATCH_SIZE}")
 
 TEAM_ID = sly.io.env.team_id()
@@ -53,16 +53,16 @@ shutil.copy(PLACEHOLDER, dst_file)
 MODELS_COLUMNS = ["Name", "Pretrained"]
 # List of available models.
 MODELS = [
-    ("coca_ViT-L-14", "mscoco_finetuned_laion2B-s13B-b90k"),
-    ("coca_ViT-L-14", "laion2B-s13B-b90k"),
-    ("ViT-L-14", "openai"),
-    ("ViT-L-14", "laion2b_s32b_b82k"),
-    ("ViT-L-14-336", "openai"),
-    ("ViT-g-14", "laion2b_s34b_b88k"),
-    ("ViT-bigG-14", "laion2b_s39b_b160k"),
-    ("convnext_base_w", "laion2b_s13b_b82k_augreg"),
-    ("convnext_large_d_320", "laion2b_s29b_b131k_ft_soup"),
-    ("convnext_xxlarge", "laion2b_s34b_b82k_augreg_soup"),
+    ("coca_ViT-L-14", "mscoco_finetuned_laion2B-s13B-b90k"),  # 2.55 GB
+    ("coca_ViT-L-14", "laion2B-s13B-b90k"),  # 2.55 GB
+    ("ViT-L-14", "openai"),  # 933 MB
+    ("ViT-L-14", "laion2b_s32b_b82k"),  # 933 MB
+    ("ViT-L-14-336", "openai"),  # 933 MB
+    ("ViT-g-14", "laion2b_s34b_b88k"),  # 5.47 GB
+    ("ViT-bigG-14", "laion2b_s39b_b160k"),  # 10.2 GB
+    ("convnext_base_w", "laion2b_s13b_b82k_augreg"),  # 718 MB
+    ("convnext_large_d_320", "laion2b_s29b_b131k_ft_soup"),  # 1.41 GB
+    # ("convnext_xxlarge", "laion2b_s34b_b82k_augreg_soup"),  # available only in timm pre-release (Apr 2023)
 ]
 # Prompt weights.
 WEIGHTS = [1.0]

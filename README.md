@@ -27,18 +27,18 @@ This app allows to quickly and easily filter and rank images in Supervisely data
 
 We have selected several pre-trained models from the [OpenCLIP](https://github.com/mlfoundations/open_clip) repository:
 
-| Model    | Pretrained on   | top-1 accuracy on ImageNet |
-| -------- | --------------- | -------------------------- |
-| coca\_ViT-L-14 | mscoco\_finetuned\_laion2B-s13B-b90k | - |
-| coca\_ViT-L-14 | laion2B-s13B-b90k | 75.5% |
-| ViT-L-14 | openai | 75.5% |
-| ViT-L-14 | laion2b\_s32b\_b82k | 75.3% |
-| ViT-L-14-336 | openai | - |
-| ViT-g-14 | laion2b\_s34b\_b88k | 78.5% |
-| ViT-bigG-14 | laion2b\_s39b\_b160k | 80.1% |
-| convnext\_base\_w | laion2b\_s13b\_b82k\_augreg | 71.5% |
-| convnext\_large\_d\_320 | laion2b\_s29b\_b131k\_ft\_soup | 76.9% |
-| convnext\_xxlarge | laion2b\_s34b\_b82k\_augreg\_soup | 79.4% |
+| Model    | Pretrained on   | top-1 accuracy on ImageNet | Size |
+| -------- | --------------- | -------------------------- | ---- |
+| coca\_ViT-L-14 | mscoco\_finetuned\_laion2B-s13B-b90k | - | 2.55 GB |
+| coca\_ViT-L-14 | laion2B-s13B-b90k | 75.5% | 2.55 GB |
+| ViT-L-14 | openai | 75.5% | 933 MB |
+| ViT-L-14 | laion2b\_s32b\_b82k | 75.3% | 933 MB |
+| ViT-L-14-336 | openai | - | 933 MB |
+| ViT-g-14 | laion2b\_s34b\_b88k | 78.5% | 5.47 GB |
+| ViT-bigG-14 | laion2b\_s39b\_b160k | 80.1% | 10.2 GB |
+| convnext\_base\_w | laion2b\_s13b\_b82k\_augreg | 71.5% | 718 MB |
+| convnext\_large\_d\_320 | laion2b\_s29b\_b131k\_ft\_soup | 76.9% | 1.41 GB |
+<!-- | convnext\_xxlarge | laion2b\_s34b\_b82k\_augreg\_soup | 79.4% |  | -->
 
 
 ## How-To-Run
