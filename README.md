@@ -26,18 +26,17 @@ This app allows you to quickly and easily filter and rank images in Supervisely 
 
 We have selected several pre-trained models from the [OpenCLIP](https://github.com/mlfoundations/open_clip) repository:
 
-| Model                | Pretrained on                      | top-1 accuracy on ImageNet    | Size    |
-| -------------------- | ---------------------------------- | ----------------------------- | ------- | --- | --- |
-| coca_ViT-L-14        | mscoco_finetuned_laion2B-s13B-b90k | -                             | 2.55 GB |
-| coca_ViT-L-14        | laion2B-s13B-b90k                  | 75.5%                         | 2.55 GB |
-| ViT-L-14             | openai                             | 75.5%                         | 933 MB  |
-| ViT-L-14             | laion2b_s32b_b82k                  | 75.3%                         | 933 MB  |
-| ViT-L-14-336         | openai                             | -                             | 933 MB  |
-| ViT-g-14             | laion2b_s34b_b88k                  | 78.5%                         | 5.47 GB |
-| ViT-bigG-14          | laion2b_s39b_b160k                 | 80.1%                         | 10.2 GB |
-| convnext_base_w      | laion2b_s13b_b82k_augreg           | 71.5%                         | 718 MB  |
-| convnext_large_d_320 | laion2b_s29b_b131k_ft_soup         | 76.9%                         | 1.41 GB |
-| <!--                 | convnext_xxlarge                   | laion2b_s34b_b82k_augreg_soup | 79.4%   |     | --> |
+| Model                | Pretrained on                      | top-1 accuracy on ImageNet | Size    |
+| -------------------- | ---------------------------------- | -------------------------- | ------- |
+| coca_ViT-L-14        | mscoco_finetuned_laion2B-s13B-b90k | -                          | 2.55 GB |
+| coca_ViT-L-14        | laion2B-s13B-b90k                  | 75.5%                      | 2.55 GB |
+| ViT-L-14             | openai                             | 75.5%                      | 933 MB  |
+| ViT-L-14             | laion2b_s32b_b82k                  | 75.3%                      | 933 MB  |
+| ViT-L-14-336         | openai                             | -                          | 933 MB  |
+| ViT-g-14             | laion2b_s34b_b88k                  | 78.5%                      | 5.47 GB |
+| ViT-bigG-14          | laion2b_s39b_b160k                 | 80.1%                      | 10.2 GB |
+| convnext_base_w      | laion2b_s13b_b82k_augreg           | 71.5%                      | 718 MB  |
+| convnext_large_d_320 | laion2b_s29b_b131k_ft_soup         | 76.9%                      | 1.41 GB |
 
 ## How-To-Run
 
