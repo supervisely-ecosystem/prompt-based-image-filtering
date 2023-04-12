@@ -27,16 +27,16 @@ We have selected several pre-trained models from the [OpenCLIP](https://github.c
 
 | Model    | Pretrained on   | top-1 accuracy on ImageNet |
 | -------- | --------------- | -------------------------- |
-| coca_ViT-L-14 | mscoco_finetuned_laion2B-s13B-b90k | - |
-| coca_ViT-L-14 | laion2B-s13B-b90k | 75.5% |
+| coca\_ViT-L-14 | mscoco\_finetuned\_laion2B-s13B-b90k | - |
+| coca\_ViT-L-14 | laion2B-s13B-b90k | 75.5% |
 | ViT-L-14 | openai | 75.5% |
-| ViT-L-14 | laion2b_s32b_b82k | 75.3% |
+| ViT-L-14 | laion2b\_s32b\_b82k | 75.3% |
 | ViT-L-14-336 | openai | - |
-| ViT-g-14 | laion2b_s34b_b88k | 78.5% |
-| ViT-bigG-14 | laion2b_s39b_b160k | 80.1% |
-| convnext_base_w | laion2b_s13b_b82k_augreg | 71.5% |
-| convnext_large_d_320 | laion2b_s29b_b131k_ft_soup | 76.9% |
-| convnext_xxlarge | laion2b_s34b_b82k_augreg_soup | 79.4% |
+| ViT-g-14 | laion2b\_s34b\_b88k | 78.5% |
+| ViT-bigG-14 | laion2b\_s39b\_b160k | 80.1% |
+| convnext\_base\_w | laion2b\_s13b\_b82k\_augreg | 71.5% |
+| convnext\_large\_d\_320 | laion2b\_s29b\_b131k\_ft\_soup | 76.9% |
+| convnext\_xxlarge | laion2b\_s34b\_b82k\_augreg\_soup | 79.4% |
 
 
 ## How-To-Run
