@@ -1,5 +1,5 @@
 <div align="center" markdown>
-<img src=""/>
+<img src="https://user-images.githubusercontent.com/115161827/233118282-30d61976-a80e-46cf-be93-ca3388c816fb.jpg"/>
 
 # Prompt-based Image Filtering with CLIP
 
