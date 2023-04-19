@@ -9,6 +9,8 @@
   "categories": [
     "neural network",
     "images",
+    "classification",
+    "nn tools",
     "data transformation"
   ],
   "need_gpu": true,
