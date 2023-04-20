@@ -76,6 +76,11 @@ method_field = Field(
 destination = DestinationProject(g.WORKSPACE_ID, project_type="images")
 
 add_confidence_checkbox = Checkbox("Add confidence tag")
+add_confidence_field = Field(
+    title="Confidence tag",
+    description="If checked, the confidence tag with text prompt and confidence value will be added to each image.",
+    content=add_confidence_checkbox,
+)
 
 save_button = Button("Save")
 
@@ -92,7 +97,7 @@ save_container = Container(
     widgets=[
         no_method_message,
         destination,
-        add_confidence_checkbox,
+        add_confidence_field,
         save_button,
         save_progress,
         result_message,
