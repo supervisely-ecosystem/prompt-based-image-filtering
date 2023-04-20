@@ -61,7 +61,7 @@ Note: if you don't run the app from the context menu of a dataset, first of all,
 
 You can also check `Add confidence tag` checkbox to add a tag with the confidence score to each image in the output dataset. Note that this option can slow down uploading images.<br><br>
 
-PLACEHOLDER FOR SCREENSHOT WITH RESULTS<br><br>
+![screen-clip](https://user-images.githubusercontent.com/115161827/233337650-e19f35b9-b537-4ee3-926e-57b0bd074f36.png) <br><br>
 
 After the upload is finished, you will see a message with the number of images that have been successfully uploaded to the dataset. The app will also show the project and the dataset to which the images were uploaded. You can click on the links to open the project or the dataset.<br><br>
 After finishing using the app, don't forget to stop the app session manually in the App Sessions. The app will write information about the text prompt and CLIP score to the image metadata. You can find this information in the Image Properties - Info section of the image in the labeling tool.
