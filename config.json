@@ -3,9 +3,14 @@
   "type": "app",
   "version": "2.0.0",
   "description": "Filter and rank images by text prompts with CLIP models",
+  "icon":"https://user-images.githubusercontent.com/115161827/233118253-655ec800-a1c8-49d3-ba4a-04c283c9443d.jpg",
+  "icon_cover": true,
+  "poster":"https://user-images.githubusercontent.com/115161827/233118282-30d61976-a80e-46cf-be93-ca3388c816fb.jpg",
   "categories": [
     "neural network",
     "images",
+    "classification",
+    "nn tools",
     "data transformation"
   ],
   "need_gpu": true,
