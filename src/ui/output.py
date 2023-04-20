@@ -283,7 +283,7 @@ def save():
     sly.logger.info(f"Finished uploading {len(uploaded_image_ids)} images.")
 
     # Copying annotations from the selected dataset to the new dataset.
-    g.api.annotation.copy_batch_by_ids(image_ids, uploaded_image_ids)
+    g.api.annotation.copy_batch_by_ids(image_ids, uploaded_image_ids, save_source_date=False)
     sly.logger.info(f"Successfully copied annotations for {len(uploaded_image_ids)} images.")
 
     if add_tag:

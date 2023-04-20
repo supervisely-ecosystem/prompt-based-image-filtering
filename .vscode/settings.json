@@ -21,4 +21,5 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "debug.inlineValues": "off",
+    "autoDocstring.docstringFormat": "sphinx"
 }
