@@ -76,6 +76,11 @@ def start_inference():
         return
 
     g.STATE.continue_inference = True
+    inference_message.text = (
+        "Preparing the model, it may take some time. Check the logs for more details."
+    )
+    inference_message.status = "info"
+    inference_message.show()
 
     # Changing UI state.
     cancel_inference_button.show()
@@ -92,11 +97,11 @@ def start_inference():
 
     # Getting selected model parameters.
     model_name, pretrained = g.MODELS[settings.model_radio_table.get_selected_row_index()][:2]
-    bath_size = settings.batch_size_input.get_value()
+    batch_size = settings.batch_size_input.get_value()
     jit = settings.jit_checkbox.is_checked()
 
     sly.logger.info(
-        f"Starting inference with model: {model_name}, batch size: {bath_size}, JIT: {jit}. Text prompt: {text_prompt}"
+        f"Starting inference with model: {model_name}, batch size: {batch_size}, JIT: {jit}. Text prompt: {text_prompt}"
     )
 
     # Locking all cards before inference is started.
@@ -112,7 +117,7 @@ def start_inference():
     # Building model, preprocessing input data and running inference.
     model, preprocess, tokenizer = clip_api.build_model(model_name, pretrained, device)
     sly.logger.info(
-        f"Model was built. Name: {model_name}, pretrained: {pretrained}, batch size: {bath_size}, JIT: {jit}."
+        f"Model was built. Name: {model_name}, pretrained: {pretrained}, batch size: {batch_size}, JIT: {jit}."
     )
 
     input_prompts = clip_api.preprocess_prompts([text_prompt], tokenizer, device)
@@ -129,13 +134,15 @@ def start_inference():
         f"Loaded {len(image_ids)} images from selected dataset with id {g.SELECTED_DATASET}."
     )
 
+    inference_message.hide()
+
     with inference_progress(message="Inference is running...", total=len(image_ids)) as pbar:
-        sly.logger.info(f"Starting inference loop with batch size: {bath_size}.")
+        sly.logger.info(f"Starting inference loop with batch size: {batch_size}.")
         start_inference_button.text = "Running..."
 
         all_logits = []
 
-        for batched_image_ids in sly.batched(image_ids, bath_size):
+        for batched_image_ids in sly.batched(image_ids, batch_size):
             if g.STATE.continue_inference:
                 # Starting inference loop in batches.
                 batched_image_bytes = g.api.image.download_bytes(
