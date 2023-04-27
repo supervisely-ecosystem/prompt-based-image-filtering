@@ -50,6 +50,9 @@ Note: if you don't run the app from the context menu of a dataset, first of all,
 
 **Step 2:** Enter the text prompt in the `Text prompt` field. The prompt can be a single word or a phrase. And then click the `Start Inference` button. The app will start with downloading chosen model and then it will start inference of images with specified batch size. You can stop the inference process at any time by clicking the `Cancel inference` button.<br><br>
 
+<img src="https://user-images.githubusercontent.com/115161827/234807371-d21ce284-0796-4825-ab75-6f4d86d8bd46.png" />
+<br><br>
+
 **Step 3:** After the inference is finished, the next section of the app will be unlocked. The chart shows a CLIP's score (on Y-axis) for each image (X-axis is for image indices), and the images are sorted by the scores in descending order. This can give you an intuition of what kind of data you have in general (e.g. the number of images within a score range) and help to select a threshold. You can also see a table with all images from the dataset and their scores, which are sorted by score in descending order by default. You can press the `Select` button in the table to preview the image. It can be handy for finding the optimal threshold for image filtering.<br><br>
 
 <img src="https://user-images.githubusercontent.com/115161827/232123378-49a885c7-7656-4ec1-85f2-f8d3be5d3597.png" /> <br><br>
@@ -68,6 +71,8 @@ After finishing using the app, don't forget to stop the app session manually in 
 
 # Acknowledgment
 
-This app is based on the great work `CLIP`: [github](https://github.com/openai/CLIP). ![GitHub Org's stars](https://img.shields.io/github/stars/openai/CLIP?style=social)
+This app is based on the great work `CLIP`: 
+
+- [GitHub](https://github.com/openai/CLIP) ![GitHub Org's stars](https://img.shields.io/github/stars/openai/CLIP?style=social)
 
 - [Pre-trained models from OpenCLIP](https://github.com/mlfoundations/open_clip)
