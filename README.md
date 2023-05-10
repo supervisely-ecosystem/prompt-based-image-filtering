@@ -26,17 +26,17 @@ This app allows you to quickly and easily filter and rank images in Supervisely 
 
 We have selected several pre-trained models from the [OpenCLIP](https://github.com/mlfoundations/open_clip) repository:
 
-| Model                | Pretrained on                      | top-1 accuracy on ImageNet | Size    |
-| -------------------- | ---------------------------------- | -------------------------- | ------- |
-| coca_ViT-L-14        | mscoco_finetuned_laion2B-s13B-b90k | -                          | 2.55 GB |
-| coca_ViT-L-14        | laion2B-s13B-b90k                  | 75.5%                      | 2.55 GB |
-| ViT-L-14             | openai                             | 75.5%                      | 933 MB  |
-| ViT-L-14             | laion2b_s32b_b82k                  | 75.3%                      | 933 MB  |
-| ViT-L-14-336         | openai                             | -                          | 933 MB  |
-| ViT-g-14             | laion2b_s34b_b88k                  | 78.5%                      | 5.47 GB |
-| ViT-bigG-14          | laion2b_s39b_b160k                 | 80.1%                      | 10.2 GB |
-| convnext_base_w      | laion2b_s13b_b82k_augreg           | 71.5%                      | 718 MB  |
-| convnext_large_d_320 | laion2b_s29b_b131k_ft_soup         | 76.9%                      | 1.41 GB |
+| Model                   | Pretrained                           | top-1 accuracy on ImageNet | Size    |
+| ----------------------- | ------------------------------------ | -------------------------- | ------- |
+| coca\_ViT-L-14          | mscoco\_finetuned\_laion2B-s13B-b90k | -                          | 2.55 GB |
+| coca\_ViT-L-14          | laion2B-s13B-b90k                    | 75.5%                      | 2.55 GB |
+| ViT-L-14                | openai                               | 75.5%                      | 933 MB  |
+| ViT-L-14                | laion2b\_s32b\_b82k                  | 75.3%                      | 933 MB  |
+| ViT-L-14-336            | openai                               | -                          | 933 MB  |
+| ViT-g-14                | laion2b\_s34b\_b88k                  | 78.5%                      | 5.47 GB |
+| ViT-bigG-14             | laion2b\_s39b\_b160k                 | 80.1%                      | 10.2 GB |
+| convnext\_base\_w       | laion2b\_s13b\_b82k\_augreg          | 71.5%                      | 718 MB  |
+| convnext\_large\_d\_320 | laion2b\_s29b\_b131k\_ft\_soup       | 76.9%                      | 1.41 GB |
 
 # How To Run
 
