@@ -10,3 +10,8 @@ RUN pip3 install Pillow==9.2.0 \
     open-clip-torch==2.16.0
 
 RUN pip3 install supervisely==6.70.10
+
+# add model weights
+WORKDIR /root
+RUN mkdir -p .cache/huggingface
+COPY huggingface .cache/huggingface

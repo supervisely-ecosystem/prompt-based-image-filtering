@@ -8,3 +8,4 @@ tmp/
 .venv/
 .DS_Store
 src/clip_test.py
+huggingface
