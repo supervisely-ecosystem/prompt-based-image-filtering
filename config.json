@@ -15,7 +15,7 @@
   ],
   "need_gpu": true,
   "community_agent": false,
-  "docker_image": "supervisely/clip_filtering:1.0.1",
+  "docker_image": "supervisely/prompt-based-image-filtering:1.0.2",
   "instance_version": "6.6.7",
   "entrypoint": "python -m uvicorn src.main:app --host 0.0.0.0 --port 8000 --ws websockets",
   "port": 8000,
