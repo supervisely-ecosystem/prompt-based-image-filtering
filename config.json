@@ -13,7 +13,8 @@
     "nn tools",
     "data transformation"
   ],
-  "need_gpu": true,
+  "need_gpu": false,
+  "gpu": "preferred",
   "community_agent": false,
   "docker_image": "supervisely/clip_filtering:1.0.1",
   "instance_version": "6.6.7",
