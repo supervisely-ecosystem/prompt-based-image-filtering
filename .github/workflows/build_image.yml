@@ -27,5 +27,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          file: Dockerfile
+          file: docker/Dockerfile
           tags: supervisely/clip_filtering:${{ github.event.inputs.tag_version }}
