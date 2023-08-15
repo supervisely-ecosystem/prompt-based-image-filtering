@@ -12,4 +12,4 @@ RUN pip3 install Pillow==9.2.0 \
 RUN pip3 install supervisely==6.70.10
 
 # download weights for two models
-RUN python3 docker/download_weights.py
+RUN python3 download_weights.py
