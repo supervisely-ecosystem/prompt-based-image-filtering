@@ -28,4 +28,4 @@ jobs:
         with:
           push: true
           file: Dockerfile
-          tags: supervisely/${{ env.REPOSITORY_NAME }}:${{ github.event.inputs.tag_version }}
+          tags: supervisely/clip_filtering:${{ github.event.inputs.tag_version }}
