@@ -9,9 +9,15 @@ from supervisely.app.widgets import (
     Image,
     Card,
     Container,
+    Text,
 )
 
 import src.globals as g
+
+confidence_text = Text(
+    "Confidence value indicates how certain the model is that the search query is relevant to the image.",
+    status="info",
+)
 
 # Preparing plot for data and hiding it until the inference is done.
 plot = LinePlot("Images scores by prompt", show_legend=True, decimals_in_float=4)
@@ -30,7 +36,12 @@ card = Card(
     title="4️⃣ Preview",
     description="Preview the results of the model.",
     content=Container(
-        widgets=[plot, Container(widgets=[table, image_preview], direction="horizontal")]
+        [
+            confidence_text,
+            Container(
+                widgets=[plot, Container(widgets=[table, image_preview], direction="horizontal")]
+            ),
+        ]
     ),
     lock_message="Complete the inference on step 3️⃣",
 )

@@ -53,9 +53,9 @@ shutil.copy(PLACEHOLDER, dst_file)
 MODELS_COLUMNS = ["Name", "Pretrained on", "Top-1 accuracy on ImageNet", "Size"]
 # List of available models.
 MODELS = [
+    ("ViT-L-14", "openai", "75.5%", "0.933 GB"),
     ("coca_ViT-L-14", "mscoco_finetuned_laion2B-s13B-b90k", "-", "2.55 GB"),
     ("coca_ViT-L-14", "laion2B-s13B-b90k", "75.5%", "2.55 GB"),
-    ("ViT-L-14", "openai", "75.5%", "0.933 GB"),
     ("ViT-L-14", "laion2b_s32b_b82k", "75.3%", "0.933 GB"),
     ("ViT-L-14-336", "openai", "-", "0.933 GB"),
     ("ViT-g-14", "laion2b_s34b_b88k", "78.5%", "5.47 GB"),
