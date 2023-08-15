@@ -90,7 +90,6 @@ def start_inference():
     preview.card.lock()
     preview.rows.clear()
     preview.image_preview.clean_up()
-    preview.image_preview.set(url=os.path.join("static", g.PLACEHOLDER))
 
     inference_progress.show()
     start_inference_button.text = "Preparing..."

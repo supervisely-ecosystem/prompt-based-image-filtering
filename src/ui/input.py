@@ -120,6 +120,7 @@ def load_dataset():
     sly.logger.debug(f"Calling API with dataset ID {dataset_id} to get project ID.")
 
     g.SELECTED_PROJECT = g.api.dataset.get_info_by_id(dataset_id).project_id
+    g.PROJECT_META = sly.ProjectMeta.from_json(g.api.project.get_meta(g.SELECTED_PROJECT))
     g.SELECTED_WORKSPACE = g.api.project.get_info_by_id(g.SELECTED_PROJECT).workspace_id
     g.SELECTED_TEAM = g.api.workspace.get_info_by_id(g.SELECTED_WORKSPACE).team_id
 

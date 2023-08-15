@@ -7,6 +7,7 @@ from supervisely.app.widgets import (
     LinePlot,
     Table,
     Image,
+    LabeledImage,
     Card,
     Container,
     Text,
@@ -27,8 +28,7 @@ table = Table(fixed_cols=1, width="100%", per_page=15, sort_column_id=4, sort_di
 table.hide()
 rows = []
 
-image_preview = Image()
-image_preview.set(url=os.path.join("static", g.PLACEHOLDER))
+image_preview = LabeledImage()
 image_preview.hide()
 
 # Card for all widgets in the module.
@@ -95,6 +95,7 @@ def build_table(image_infos: List[sly.api.image_api.ImageInfo], scores: List[flo
     table.loading = False
 
     table.show()
+    update_preview(image_infos[0])
     image_preview.show()
 
 
@@ -154,11 +155,13 @@ def handle_table_button(datapoint: sly.app.widgets.Table.ClickedDataPoint):
         f"Image with id {selected_image_id} was selected in the table. Image info retrieved successfully."
     )
 
+    update_preview(selected_image_info)
+
+
+def update_preview(image_info: sly.ImageInfo):
+    sly.logger.debug(f"Trying to update image preview with image id {image_info.id}.")
     image_preview.loading = True
-
-    selected_image_url = selected_image_info.preview_url
-    image_preview.set(url=selected_image_url)
-
+    ann = sly.Annotation.from_json(g.api.annotation.download_json(image_info.id), g.PROJECT_META)
+    image_preview.set(title=image_info.name, image_url=image_info.preview_url, ann=ann)
     image_preview.loading = False
-
-    sly.logger.debug(f"Updated image preview with url {selected_image_url}.")
+    sly.logger.debug(f"Updated image preview with url {image_info.preview_url}.")
