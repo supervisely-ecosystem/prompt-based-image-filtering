@@ -21,7 +21,7 @@ def build_model(model_name, pretrained, device, model_data, jit=False):
         sly.logger.info(f"Model file wasn't found in cache in path {model_path}")
         sly.logger.info(f"Model {model_name} will be downloaded from {model_url}")
 
-        # download_model(model_url, model_path)
+        download_model(model_url, model_path)
 
     sly.logger.info("Preparing the model...")
 
