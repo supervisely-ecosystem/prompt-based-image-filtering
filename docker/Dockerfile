@@ -1,3 +1,7 @@
+# download weights for two models
+COPY docker/download_weights.py /tmp
+RUN python3 /tmp/download_weights.py
+
 FROM supervisely/base-py-sdk:6.69.70
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -10,6 +14,3 @@ RUN pip3 install Pillow==9.2.0 \
     open-clip-torch==2.16.0
 
 RUN pip3 install supervisely==6.70.10
-
-# download weights for two models
-RUN python3 download_weights.py
