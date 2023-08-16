@@ -1,8 +1,8 @@
+FROM supervisely/base-py-sdk:6.69.70
+
 # download weights for two models
 COPY docker/download_weights.py /tmp
 RUN python3 /tmp/download_weights.py
-
-FROM supervisely/base-py-sdk:6.69.70
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y build-essential
