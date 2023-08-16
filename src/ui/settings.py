@@ -4,7 +4,7 @@ import src.globals as g
 
 # Building rows for RadioTable.
 rows = []
-for model in g.MODELS:
+for model in g.MODELS.keys():
     row = [*model]
     rows.append(row)
 

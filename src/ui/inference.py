@@ -1,6 +1,8 @@
 import io
 import os
 
+from typing import Dict
+
 import numpy as np
 import supervisely as sly
 
@@ -83,7 +85,6 @@ def start_inference():
     inference_message.show()
 
     # Changing UI state.
-    cancel_inference_button.show()
     text_prompt_message.hide()
     preview.table.hide()
     preview.image_preview.hide()
@@ -95,7 +96,12 @@ def start_inference():
     start_inference_button.text = "Preparing..."
 
     # Getting selected model parameters.
-    model_name, pretrained = g.MODELS[settings.model_radio_table.get_selected_row_index()][:2]
+    selected_model = tuple(settings.model_radio_table.get_selected_row())
+    model_name, pretrained = selected_model[:2]
+    sly.logger.debug(f"Selected model: {selected_model}.")
+    model_data: Dict = g.MODELS[selected_model]
+    sly.logger.debug(f"Retrieved model data: {model_data}.")
+
     batch_size = settings.batch_size_input.get_value()
     jit = settings.jit_checkbox.is_checked()
 
@@ -114,10 +120,11 @@ def start_inference():
     sly.logger.info(f"Using device: {device}.")
 
     # Building model, preprocessing input data and running inference.
-    model, preprocess, tokenizer = clip_api.build_model(model_name, pretrained, device)
+    model, preprocess, tokenizer = clip_api.build_model(model_name, pretrained, device, model_data)
     sly.logger.info(
         f"Model was built. Name: {model_name}, pretrained: {pretrained}, batch size: {batch_size}, JIT: {jit}."
     )
+    cancel_inference_button.show()
 
     input_prompts = clip_api.preprocess_prompts([text_prompt], tokenizer, device)
     sly.logger.info(f"Input prompts were preprocessed. Text prompt: {text_prompt}.")

@@ -1,10 +1,30 @@
+import os
 import numpy as np
 import torch
+import urllib
 from PIL import Image, ImageOps
 import open_clip
 
+import supervisely as sly
 
-def build_model(model_name, pretrained, device, jit=False):
+CACHE_DIR = os.path.join(os.path.expanduser("~"), ".cache")
+sly.fs.mkdir(CACHE_DIR)
+sly.logger.info(f"Models cache dir: {CACHE_DIR}")
+
+
+def build_model(model_name, pretrained, device, model_data, jit=False):
+    model_url = model_data.get("url")
+    model_filename = model_data.get("path")
+    model_path = os.path.join(CACHE_DIR, model_filename)
+
+    if not os.path.exists(model_path):
+        sly.logger.info(f"Model file wasn't found in cache in path {model_path}")
+        sly.logger.info(f"Model {model_name} will be downloaded from {model_url}")
+
+        # download_model(model_url, model_path)
+
+    sly.logger.info("Preparing the model...")
+
     model, _, preprocess = open_clip.create_model_and_transforms(
         model_name, pretrained, device=device, jit=jit
     )
@@ -50,3 +70,28 @@ def collect_inference(logits):
 def calculate_scores(logits: np.ndarray, weights: list):
     scores = (logits * weights).sum(-1)
     return scores
+
+
+def download_model(source_url, dst_path):
+    from src.ui.inference import inference_progress
+
+    sly.logger.info(f"Download started from: {source_url}")
+    sly.fs.mkdir(os.path.dirname(dst_path))
+
+    with urllib.request.urlopen(source_url) as source, open(dst_path, "wb") as output:
+        with inference_progress(
+            message="Downloading model...",
+            total=int(source.headers.get("Content-Length")),
+            ncols=80,
+            unit="iB",
+            unit_scale=True,
+        ) as pbar:
+            while True:
+                buffer = source.read(8192)
+                if not buffer:
+                    break
+
+                output.write(buffer)
+                pbar.update(len(buffer))
+
+    sly.logger.info(f"Download finished. Model saved to: {dst_path}")
