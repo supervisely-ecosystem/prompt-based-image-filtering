@@ -43,6 +43,7 @@ if g.DATASET_ID and g.PROJECT_ID:
     g.SELECTED_TEAM = g.TEAM_ID
     g.SELECTED_WORKSPACE = g.WORKSPACE_ID
     g.SELECTED_PROJECT = g.PROJECT_ID
+    g.PROJECT_META = sly.ProjectMeta.from_json(g.api.project.get_meta(g.SELECTED_PROJECT))
     g.SELECTED_DATASET = g.DATASET_ID
 
     # Hiding unnecessary widgets.

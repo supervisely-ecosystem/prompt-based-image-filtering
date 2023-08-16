@@ -87,7 +87,6 @@ def download_model(source_url, dst_path):
         with inference_progress(
             message="Downloading model...",
             total=int(source.headers.get("Content-Length")),
-            ncols=80,
             unit="iB",
             unit_scale=True,
         ) as pbar:
