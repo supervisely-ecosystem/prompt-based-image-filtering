@@ -20,6 +20,15 @@
 
 # Overview
 
+🔥🔥🔥 Check out our [youtube tutorial](https://youtu.be/sHbu_9V4H60?si=R1-rblJ7GjyBndPq) and the [complete guide in our blog](https://supervisely.com/blog/openai-clip-for-image-retrieval-and-filtering-computer-vision-datasets-tutorial/):   
+
+<a data-key="sly-embeded-video-link" href="https://youtu.be/sHbu_9V4H60?si=R1-rblJ7GjyBndPq" data-video-code="sHbu_9V4H60?si=R1-rblJ7GjyBndPq">
+  <picture>
+    <img src="https://github.com/supervisely-ecosystem/prompt-based-image-filtering/assets/106374579/526f55e3-9b41-4408-b21c-d2feaa9baf84">
+  <picture>
+</a>
+
+
 This app allows you to quickly and easily filter and rank images in Supervisely datasets by text prompts. It uses [CLIP](https://openai.com/research/clip) model to predict the **relevance** of images to the given text prompt. This app can be useful for filtering or ranking images in a dataset by their content. The relevance (CLIP score) of each image to the given prompt will be shown in a table. The user can choose to filter or sort images by relevance or do both at the same time and then upload images to a new dataset.
 
 # Pretrained models
