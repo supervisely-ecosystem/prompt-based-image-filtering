@@ -11,7 +11,7 @@ if sly.is_development():
     load_dotenv("local.env")
     load_dotenv(os.path.expanduser("~/supervisely.env"))
 
-api: sly.Api = sly.Api.from_env()
+api = sly.Api.from_env()
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MODEL_BATCH_SIZE = 32 if DEVICE == "cuda" else 16
