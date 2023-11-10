@@ -11,17 +11,17 @@ if sly.is_development():
     load_dotenv("local.env")
     load_dotenv(os.path.expanduser("~/supervisely.env"))
 
-api: sly.Api = sly.Api.from_env()
+api = sly.Api.from_env()
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MODEL_BATCH_SIZE = 32 if DEVICE == "cuda" else 16
 sly.logger.info(f"Chosen device: {DEVICE}, batch size: {MODEL_BATCH_SIZE}")
 
-TEAM_ID = sly.io.env.team_id()
-WORKSPACE_ID = sly.io.env.workspace_id()
+TEAM_ID = sly.env.team_id()
+WORKSPACE_ID = sly.env.workspace_id()
 
-PROJECT_ID = sly.io.env.project_id(raise_not_found=False)
-DATASET_ID = sly.io.env.dataset_id(raise_not_found=False)
+PROJECT_ID = sly.env.project_id(raise_not_found=False)
+DATASET_ID = sly.env.dataset_id(raise_not_found=False)
 
 # Image table columns.
 SELECT_BUTTON = "SELECT"
