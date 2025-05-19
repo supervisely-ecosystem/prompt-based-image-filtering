@@ -53,6 +53,10 @@ shutil.copy(PLACEHOLDER, dst_file)
 MODELS_COLUMNS = ["Name", "Pretrained on", "Top-1 accuracy on ImageNet", "Size"]
 # List of available models.
 MODELS = {
+    ("ViT-B-32", "openai", "72.7%", "0.338 GB"): {
+        "url": "https://huggingface.co/jinaai/clip-models/resolve/main/ViT-B-32.pt",
+        "path": "clip/ViT-B-32.pt",
+    },
     ("ViT-L-14", "openai", "75.5%", "0.933 GB"): {
         "url": "https://openaipublic.azureedge.net/clip/models/b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836/ViT-L-14.pt",
         "path": "clip/ViT-L-14.pt",
