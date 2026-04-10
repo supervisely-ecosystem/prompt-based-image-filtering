@@ -1,0 +1,7 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+torch
+torchvision
+
+supervisely==6.73.556
+open-clip-torch
